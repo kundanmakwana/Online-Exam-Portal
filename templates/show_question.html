@@ -1,0 +1,33 @@
+<h1 class="font-medium font-serif leading-tight text-5xl mt-0 mb-2 text-gray-900 flex justify-center py-3">Questions!</h1>    
+{% for question in question_info %}
+      <h1 class="font-medium font-serif leading-tight text-2xl mt-0 mb-2 text-gray-900 flex">
+            {{ forloop.counter }}) {{question.q_text}}</h1>  
+      <div class="flex flex-row">
+      <h1 class="font-medium font-serif leading-tight text-xl mx-10 mt-0 mb-2 text-gray-900">
+      Option A :- {{question.op_a}}
+      </h1>
+      </div>
+      <div class="flex flex-row">
+      <h1 class="font-medium font-serif leading-tight text-xl mt-0 mx-10 mb-2 text-gray-900">
+      Option B :- {{question.op_b}}
+      </h1>
+      </div>
+      <div class="flex flex-row">
+            <h1 class="font-medium font-serif leading-tight text-xl mx-10 mt-0 mb-2 text-gray-900">
+            Option C :- {{question.op_c}}
+            </h1>
+      </div>
+      <div class="flex flex-row">
+            <h1 class="font-medium font-serif leading-tight text-xl mt-0 mx-10 mb-2 text-gray-900 ">
+            Option D :- {{question.op_d}}
+                  </h1>
+            </div>
+      <div class="flex flex-row">
+            <h1 class="font-medium font-serif leading-tight text-2xl mt-0 mx-10 mb-2 text-gray-900 ">
+            <hr class="h-0.5 bg-gray-100 border-0 rounded  dark:bg-gray-700">Answer :- {{question.ans}}
+                  </h1>
+            </div>
+<div class=" bg-gray-900 text-center w-[98%] h-[3px] mb-5"></div>
+
+      {% endfor %}
+

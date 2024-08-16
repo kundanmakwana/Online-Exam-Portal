@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css"
+      />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+      />
+    <link rel="stylesheet" href="/static/assets/css/tailwind.output.css" />
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+      defer></script>
+    <script src="/static/assets/js/init-alpine.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
+      />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
+      defer></script>
+
+  <link rel="icon" href="/static/images/logo.png">
+
+  </head>
+  <body>
+    <div
+      class="flex h-screen bg-gray-50 dark:bg-gray-900"
+      :class="{ 'overflow-hidden': isSideMenuOpen }">
+      <!-- Desktop sidebar -->
+      <aside
+        class="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800
+        md:block flex-shrink-0">
+        <div class="py-4 text-gray-500 dark:text-gray-400">
+
+          <a href="{% url 'teacher_profile' teacher.t_id %}"
+            class="text-lg font-bold text-gray-800 dark:text-gray-200">
+            <img class="w-12 h-12 rounded-full border-solid border-2" style="float:left;margin-left: 20px; margin-right: 10px;" src="{{teacher_photo}}"><span class="p-2" style="display:inline-block;">{{teacher.t_name}}</span>
+          </a>
+
+          <ul class="mt-6">
+            <li class="relative px-6 py-3">
+              <span
+                class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg
+                rounded-br-lg"
+                aria-hidden="true"></span>
+              <a
+                class="inline-flex items-center w-full text-sm font-semibold
+                text-gray-800 transition-colors duration-150 hover:text-gray-800
+                dark:hover:text-gray-200 dark:text-gray-100"
+                href="{% url 'teacher_dashboard' teacher.t_id %}">
+                <svg
+                  class="w-5 h-5"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2
+                    2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0
+                    011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                <span class="ml-4">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="px-6 my-6">
+            <a href="{% url 't_logout' teacher.t_id %}">
+            <button
+              class="flex items-center justify-between w-full px-4 py-2 text-sm
+              font-medium leading-5 text-white transition-colors duration-150
+              bg-purple-600 border border-transparent rounded-lg
+              active:bg-purple-600 hover:bg-purple-700 focus:outline-none
+              focus:shadow-outline-purple">
+              Log out
+              <i class="bi bi-box-arrow-in-right"></i>
+            </button></a>
+          </div>
+        </div>
+      </aside>
+      <!-- Mobile sidebar -->
+      <!-- Backdrop -->
+      <div
+        x-show="isSideMenuOpen"
+        x-transition:enter="transition ease-in-out duration-150"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in-out duration-150"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-10 flex items-end bg-black bg-opacity-50
+        sm:items-center sm:justify-center"></div>
+      <aside
+        class="fixed inset-y-0 z-20 flex-shrink-0 w-64 mt-16 overflow-y-auto
+        bg-white dark:bg-gray-800 md:hidden"
+        x-show="isSideMenuOpen"
+        x-transition:enter="transition ease-in-out duration-150"
+        x-transition:enter-start="opacity-0 transform -translate-x-20"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in-out duration-150"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0 transform -translate-x-20"
+        @click.away="closeSideMenu"
+        @keydown.escape="closeSideMenu">
+        <div class="py-4 text-gray-500 dark:text-gray-400">
+          <a href="{% url 'teacher_profile' teacher.t_id %}"
+            class="text-lg font-bold text-gray-800 dark:text-gray-200">
+            <img class="w-12 h-12 rounded-full border-solid border-2" style="float:left;margin-left: 20px; margin-right: 10px;" src="{{teacher_photo}}"><span class="p-2" style="display:inline-block;">{{teacher.t_name}}</span>
+          </a>
+          <ul class="mt-6">
+            <li class="relative px-6 py-3">
+              <span
+                class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg
+                rounded-br-lg"
+                aria-hidden="true"></span>
+              <a
+                class="inline-flex items-center w-full text-sm font-semibold
+                text-gray-800 transition-colors duration-150 hover:text-gray-800
+                dark:hover:text-gray-200 dark:text-gray-100"
+                href="{% url 'teacher_dashboard' teacher.t_id %}">
+                <svg
+                  class="w-5 h-5"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2
+                    2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0
+                    011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                <span class="ml-4">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+        
+            <div class="px-6 my-6">
+              <a href="{% url 't_logout' teacher.t_id %}">
+              <button
+                class="flex items-center justify-between w-full px-4 py-2
+                text-sm
+                font-medium leading-5 text-white transition-colors duration-150
+                bg-purple-600 border border-transparent rounded-lg
+                active:bg-purple-600 hover:bg-purple-700 focus:outline-none
+                focus:shadow-outline-purple">
+                Log out
+                <i class="bi bi-box-arrow-in-right"></i>
+              </button></a>
+            </button>
+          </div>
+        </div>
+      </aside>
+      <div class="flex flex-col flex-1 w-full">
+        <header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
+          <div
+            class="container flex items-center justify-between h-full px-6
+            mx-auto text-purple-600 dark:text-purple-300">
+            <!-- Mobile hamburger -->
+            <button
+              class="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none
+              focus:shadow-outline-purple"
+              @click="toggleSideMenu"
+              aria-label="Menu">
+              <svg
+                class="w-6 h-6"
+                aria-hidden="true"
+                fill="currentColor"
+                viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0
+                  011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0
+                  110 2H4a1 1 0 01-1-1z"
+                  clip-rule="evenodd"></path>
+              </svg>
+            </button>
+            <!-- Search input -->
+            <div class="flex justify-center flex-1 lg:mr-32">
+              <a class="ml-6 text-2xl font-bold text-gray-800
+                dark:text-gray-200" href="#">Shree Matri Classes</a>
+            </div>
+            <!-- Theme toggler -->
+            <li class="flex">
+              <button
+                class="rounded-md focus:outline-none
+                focus:shadow-outline-purple"
+                @click="toggleTheme"
+                aria-label="Toggle color mode">
+                <template x-if="!dark">
+                  <svg
+                    class="w-5 h-5"
+                    aria-hidden="true"
+                    fill="currentColor"
+                    viewBox="0 0 20 20">
+                    <path
+                      d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0
+                      1010.586 10.586z"></path>
+                  </svg>
+                </template>
+                <template x-if="dark">
+                  <svg
+                    class="w-5 h-5"
+                    aria-hidden="true"
+                    fill="currentColor"
+                    viewBox="0 0 20 20">
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4
+                      4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0
+                      001.414-1.414l-.707-.707a1 1 0 00-1.414
+                      1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0
+                      11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0
+                      100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2
+                      0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465
+                      5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414
+                      8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0
+                      011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                      clip-rule="evenodd"></path>
+                  </svg>
+                </template>
+              </button>
+            </li>
+
+            <!-- Profile menu -->
+            
+          </ul>
+        </div>
+      </header>
+      <main class="h-full overflow-y-auto">
+        <div class="px-6 mx-auto grid">
+          <h2
+            class="mt-6 text-6xl font-semibold text-purple-600
+            dark:text-purple-200">
+            {{exam_info.e_name}}
+          </h2>
+          <br>
+          {% if que_info != 0 %}
+          <form method="POST">
+            {% csrf_token %}
+            <h1 class="mt-6 text-3xl font-semibold text-gray-700
+              dark:text-gray-200 text-center">Add questions</h1><br>
+            {% for i in que_info %}
+           
+              <div class="mb-3">
+                <label class="form-label
+                  font-serif inline-block mb-2 text-xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">Question {{ forloop.counter }} :-</label>
+                <textarea rows="4"
+                  class="block w-full h-full mt-1 text-xl dark:border-gray-600
+                  dark:bg-gray-700 focus:border-purple-400 focus:outline-none
+                  focus:shadow-outline-purple dark:text-gray-300
+                  dark:focus:shadow-outline-gray form-input"
+                  id="que_{{ forloop.counter }}"
+                  name="que_{{ forloop.counter }}"                  
+                  required
+                  placeholder="Question {{ forloop.counter }}">{{i.q_text}}</textarea>
+              </div>
+            
+            <br>
+            <br>
+            <div class="flex justify-center">
+              <div class="mb-3 xl:w-96 pt-10 pr-2">
+                <label class="form-label
+                  font-serif inline-block mb-2 text-xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">Option A :-</label>
+                <input
+                  class="block w-full mt-1 text-xl dark:border-gray-600
+                  dark:bg-gray-700 focus:border-purple-400 focus:outline-none
+                  focus:shadow-outline-purple dark:text-gray-300
+                  dark:focus:shadow-outline-gray form-input"
+                  id="op_a_{{ forloop.counter }}"
+                  name="op_a_{{ forloop.counter }}"
+                  value="{{i.op_a}}"
+                  required
+                  placeholder="Option A"/>
+              </div>
+              <div class="mb-3 xl:w-96 pt-10 pl-6">
+                <label class="form-label
+                  font-serif inline-block mb-2 text-xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">Option B :-</label>
+                <input
+                  class="block w-full mt-1 text-xl dark:border-gray-600
+                  dark:bg-gray-700 focus:border-purple-400 focus:outline-none
+                  focus:shadow-outline-purple dark:text-gray-300
+                  dark:focus:shadow-outline-gray form-input"
+                  id="op_b_{{ forloop.counter }}"
+                  name="op_b_{{ forloop.counter }}"
+                  value="{{i.op_b}}"
+                  required
+                  placeholder="Option B"/>
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="flex justify-center">
+              <div class="mb-3 xl:w-96 pr-2">
+                <label class="form-label
+                  font-serif inline-block mb-2 text-xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">Option C :-</label>
+                <input
+                  class="block w-full mt-1 text-xl dark:border-gray-600
+                  dark:bg-gray-700 focus:border-purple-400 focus:outline-none
+                  focus:shadow-outline-purple dark:text-gray-300
+                  dark:focus:shadow-outline-gray form-input"
+                  id="op_c_{{ forloop.counter }}"
+                  name="op_c_{{ forloop.counter }}"
+                  value="{{i.op_c}}"
+                  required
+                  placeholder="Option C"/>
+              </div>
+              <div class="mb-3 xl:w-96 pl-6">
+                <label class="form-label
+                  font-serif inline-block mb-2 text-xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">Option D :-</label>
+                <input
+                  class="block w-full mt-1 text-xl dark:border-gray-600
+                  dark:bg-gray-700 focus:border-purple-400 focus:outline-none
+                  focus:shadow-outline-purple dark:text-gray-300
+                  dark:focus:shadow-outline-gray form-input"
+                  id="op_d_{{ forloop.counter }}"
+                  name="op_d_{{ forloop.counter }}"
+                  value="{{i.op_d}}"
+                  required
+                  placeholder="Option D"/>yoo
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="flex justify-center">
+              <div class="mb-3 xl:w-96 pr-2">
+                <label class="form-label
+                  font-serif inline-block mb-2 text-xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">Answer :-</label>
+                <select
+                  class="block p-3 rounded border-2 w-full mt-1 text-xl dark:border-gray-600
+                  dark:bg-gray-700 focus:border-purple-400 focus:outline-none
+                  focus:shadow-outline-purple dark:text-gray-300
+                  dark:focus:shadow-outline-gray"
+                  id="ans_{{ forloop.counter }}"
+                  name="ans_{{ forloop.counter }}"
+                  required>
+                  {% if i.ans == "A" %}
+                  <option selected value="A">A</option>                  
+                  {% else %}
+                  <option value="A">A</option>
+                  {% endif %}
+                  {% if i.ans == "B" %}
+                  <option selected value="B">B</option>                  
+                  {% else %}
+                  <option value="B">B</option>
+                  {% endif %}
+                  {% if i.ans == "C" %}
+                  <option selected value="A">C</option>                  
+                  {% else %}
+                  <option value="C">C</option>
+                  {% endif %}
+                  {% if i.ans == "D" %}
+                  <option selected value="D">D</option>                  
+                  {% else %}
+                  <option value="D">D</option>
+                  {% endif %}
+                  
+                  
+                </select>
+              </div>
+
+            </div>
+            <input type="hidden" name="q_id_{{ forloop.counter }}" value="{{i.id}}"/>
+            <br>
+            <br>
+            {% endfor %}
+            <div class="grid gap-3 mb-8 md:grid-cols-2">
+              <div class="min-w-0 p-4 rounded-lg shadow-xs">
+            <button type="reset"
+            class="w-full px-4 py-2 text-2xl 
+            font-medium text-white transition-colors duration-150
+            bg-purple-600 border border-transparent rounded-lg
+            active:bg-purple-600 hover:bg-purple-700 focus:outline-none
+            focus:shadow-outline-purple text-center">
+            Reset
+            </button></div>
+            <div class="min-w-0 p-4 rounded-lg shadow-xs">
+              <button type="submit"
+              class="w-full px-4 py-2 text-2xl 
+              font-medium text-white transition-colors duration-150
+              bg-purple-600 border border-transparent rounded-lg
+              active:bg-purple-600 hover:bg-purple-700 focus:outline-none
+              focus:shadow-outline-purple text-center">
+              Edit Questions
+            </button></div>
+            </div>
+          </form>
+          
+          {% else %}
+          
+          {% if questions_are_there == 0 %}
+          <form method="POST">
+            {% csrf_token %}
+            <h1 class="mt-6 text-3xl font-semibold text-gray-700
+              dark:text-gray-200 text-center">Add questions</h1><br>
+            {% for i in que_num %}
+           
+              <div class="mb-3">
+                <label class="form-label
+                  font-serif inline-block mb-2 text-xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">Question {{ forloop.counter }} :-</label>
+                <textarea rows="4"
+                  class="block w-full h-full mt-1 text-xl dark:border-gray-600
+                  dark:bg-gray-700 focus:border-purple-400 focus:outline-none
+                  focus:shadow-outline-purple dark:text-gray-300
+                  dark:focus:shadow-outline-gray form-input"
+                  id="que_{{ forloop.counter }}"
+                  name="que_{{ forloop.counter }}"
+                  required
+                  placeholder="Question {{ forloop.counter }}"></textarea>
+              </div>
+            
+            <br>
+            <br>
+            <div class="flex justify-center">
+              <div class="mb-3 xl:w-96 pt-10 pr-2">
+                <label class="form-label
+                  font-serif inline-block mb-2 text-xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">Option A :-</label>
+                <input
+                  class="block w-full mt-1 text-xl dark:border-gray-600
+                  dark:bg-gray-700 focus:border-purple-400 focus:outline-none
+                  focus:shadow-outline-purple dark:text-gray-300
+                  dark:focus:shadow-outline-gray form-input"
+                  id="op_a_{{ forloop.counter }}"
+                  name="op_a_{{ forloop.counter }}"
+                  required
+                  placeholder="Option A"/>
+              </div>
+              <div class="mb-3 xl:w-96 pt-10 pl-6">
+                <label class="form-label
+                  font-serif inline-block mb-2 text-xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">Option B :-</label>
+                <input
+                  class="block w-full mt-1 text-xl dark:border-gray-600
+                  dark:bg-gray-700 focus:border-purple-400 focus:outline-none
+                  focus:shadow-outline-purple dark:text-gray-300
+                  dark:focus:shadow-outline-gray form-input"
+                  id="op_b_{{ forloop.counter }}"
+                  name="op_b_{{ forloop.counter }}"
+                  required
+                  placeholder="Option B"/>
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="flex justify-center">
+              <div class="mb-3 xl:w-96 pr-2">
+                <label class="form-label
+                  font-serif inline-block mb-2 text-xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">Option C :-</label>
+                <input
+                  class="block w-full mt-1 text-xl dark:border-gray-600
+                  dark:bg-gray-700 focus:border-purple-400 focus:outline-none
+                  focus:shadow-outline-purple dark:text-gray-300
+                  dark:focus:shadow-outline-gray form-input"
+                  id="op_c_{{ forloop.counter }}"
+                  name="op_c_{{ forloop.counter }}"
+                  required
+                  placeholder="Option C"/>
+              </div>
+              <div class="mb-3 xl:w-96 pl-6">
+                <label class="form-label
+                  font-serif inline-block mb-2 text-xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">Option D :-</label>
+                <input
+                  class="block w-full mt-1 text-xl dark:border-gray-600
+                  dark:bg-gray-700 focus:border-purple-400 focus:outline-none
+                  focus:shadow-outline-purple dark:text-gray-300
+                  dark:focus:shadow-outline-gray form-input"
+                  id="op_d_{{ forloop.counter }}"
+                  name="op_d_{{ forloop.counter }}"
+                  required
+                  placeholder="Option D"/>
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="flex justify-center">
+              <div class="mb-3 xl:w-96 pr-2">
+                <label class="form-label
+                  font-serif inline-block mb-2 text-xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">Answer :-</label>
+                <select
+                  class="block p-3 rounded border-2 w-full mt-1 text-xl dark:border-gray-600
+                  dark:bg-gray-700 focus:border-purple-400 focus:outline-none
+                  focus:shadow-outline-purple dark:text-gray-300
+                  dark:focus:shadow-outline-gray"
+                  id="ans_{{ forloop.counter }}"
+                  name="ans_{{ forloop.counter }}"
+                  required>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                </select>
+              </div>
+
+            </div>
+            <br>
+            <br>
+            {% endfor %}
+            <div class="grid gap-3 mb-8 md:grid-cols-2">
+              <div class="min-w-0 p-4 rounded-lg shadow-xs">
+            <button type="reset"
+            class="w-full px-4 py-2 text-2xl 
+            font-medium text-white transition-colors duration-150
+            bg-purple-600 border border-transparent rounded-lg
+            active:bg-purple-600 hover:bg-purple-700 focus:outline-none
+            focus:shadow-outline-purple text-center">
+            Reset
+            </button></div>
+            <div class="min-w-0 p-4 rounded-lg shadow-xs">
+              <button type="submit"
+              class="w-full px-4 py-2 text-2xl 
+              font-medium text-white transition-colors duration-150
+              bg-purple-600 border border-transparent rounded-lg
+              active:bg-purple-600 hover:bg-purple-700 focus:outline-none
+              focus:shadow-outline-purple text-center">
+              Add Questions
+            </button></div>
+            </div>
+          </form>
+          {% else %}
+          <h1 class="form-label
+          font-serif inline-block mb-2 text-xl text-white-600 text-2xl
+          text-white-600 dark:text-white text-center">Questions</h1>    
+{% for question in question_info %}
+      <h1 
+      class="form-label
+                  font-serif inline-block mb-2 text-2xl text-purple-600 text-xl
+                  text-purple-600 dark:text-purple-600">
+            {{ forloop.counter }}) {{question.q_text}}</h1>  
+      <div class="flex flex-row">
+      <h1 class="form-label
+      font-serif inline-block mb-2 text-xl text-white-900 text-xl
+      text-white-900 dark:text-white">
+      Option A :- {{question.op_a}}
+      </h1>
+      </div>
+      <div class="flex flex-row">
+      <h1 class="form-label
+      font-serif inline-block mb-2 text-xl text-white-900 text-xl
+      text-white-900 dark:text-white">
+      Option B :- {{question.op_b}}
+      </h1>
+      </div>
+      <div class="flex flex-row">
+            <h1 class="form-label
+            font-serif inline-block mb-2 text-xl text-white-900 text-xl
+            text-white-900 dark:text-white">
+            Option C :- {{question.op_c}}
+            </h1>
+      </div>
+      <div class="flex flex-row">
+            <h1 class="form-label
+            font-serif inline-block mb-2 text-xl text-white-900 text-xl
+            text-white-900 dark:text-white">
+            Option D :- {{question.op_d}}
+                  </h1>
+      </div>
+      <div class="flex flex-row">
+            <h1 class="form-label
+            font-serif inline-block mb-2 text-xl text-white text-xl
+            text-white dark:text-white">
+            <hr class="h-0.5 bg-white-100 border-0 rounded  dark:bg-white-700">Answer :- {{question.ans}}
+                  </h1>
+      </div>
+      
+    
+<div class=" bg-white-900 text-center w-[98%] h-[3px] mb-5"></div>
+
+      {% endfor %}
+      <form method="POST">
+        <input type="hidden" name="edit_question" value="true"/>
+      {% csrf_token %}
+      <div class="min-w-0 p-4 rounded-lg shadow-xs">
+        <button type="submit"
+        class="w-full px-4 py-2 text-2xl 
+        font-medium text-white transition-colors duration-150
+        bg-purple-600 border border-transparent rounded-lg
+        active:bg-purple-600 hover:bg-purple-700 focus:outline-none
+        focus:shadow-outline-purple text-center">
+        Edit Questions
+      </button>    
+    </div>
+    </form>
+
+            <!-- New Table -->
+            <br><h1 class="form-label
+            font-serif inline-block mb-2 text-xl text-white-600 text-2xl
+            text-white-600 dark:text-white text-center">Results</h1> <br>
+            <div class="w-full overflow-hidden rounded-lg shadow-xs pb-10">
+              <div class="w-full overflow-x-auto">
+                
+                <table class="w-full whitespace-no-wrap">
+                  <thead>
+                    <tr
+                      class="text-xs font-semibold tracking-wide text-left
+                      text-gray-500 uppercase border-b dark:border-gray-700
+                      bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                      <th class="px-4 py-3">Student</th>
+                      <th class="px-4 py-3">Score</th>
+                      <th class="px-4 py-3">Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="bg-white divide-y dark:divide-gray-700
+                    dark:bg-gray-800">
+                    {% for result in result_info %}
+                    <tr class="text-gray-700 dark:text-gray-400">
+                      <td class="px-4 py-3">
+                        <div class="flex items-center text-sm">
+                          <!-- Avatar with inset shadow -->
+                          <div
+                            class="relative hidden w-8 h-8 mr-3 rounded-full
+                            md:block">
+                            <img
+                              class="object-cover w-full h-full rounded-full"
+                              src="{{result.pic}}"
+                              alt=""
+                              loading="lazy"
+                              />
+                            <div
+                              class="absolute inset-0 rounded-full shadow-inner"
+                              aria-hidden="true"></div>
+                          </div>
+                          <div>
+                            <p class="font-semibold">{{result.s_name }}</p>
+
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-4 py-3">
+                            <p class="font-semibold">{{result.marks_obt}}</p>
+                      </td>
+                      <td class="px-4 py-3">
+                        <p class="font-semibold">{{result.perct}}%</p>
+                  </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+
+            </div><br><br>
+            {% endif %}
+            {% endif %}
+
+
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

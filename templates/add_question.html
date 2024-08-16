@@ -1,0 +1,184 @@
+<form method="POST">
+    {% csrf_token %}
+    <h1 class="font-medium font-serif leading-tight text-4xl mt-0 mb-2 text-gray-900 flex justify-center py-3">Add questions</h1>    
+
+{% for i in que_num %}
+<div class="flex justify-center">
+    <div class="mb-3 xl:w-96">
+      <label for="exampleFormControlInput1" class="form-label font-serif inline-block mb-2 text-xl text-gray-700"
+        >Question {{ forloop.counter }} :-</label
+      >
+      <textarea
+        class="
+          form-control
+          block
+          w-full
+          h-full
+          px-3
+          py-1.5
+          text-base
+          font-normal
+          text-gray-700
+          bg-white bg-clip-padding
+          border border-solid border-black
+          rounded
+          transition
+          ease-in-out
+          m-0
+          focus:text-gray-700 focus:bg-white focus:border-gray-600 focus:outline-none
+        "
+        id="que_{{ forloop.counter }}"
+        name="que_{{ forloop.counter }}"
+        required
+        placeholder="Question {{ forloop.counter }}"></textarea>
+    </div>
+</div>
+<div class="flex justify-center">
+    <div class="mb-3 xl:w-96 pt-10 pr-2">
+      <label for="exampleFormControlInput1" class="form-label font-serif inline-block mb-2 text-xl text-gray-700"
+        >Option A :-</label>
+      <input
+        class="
+          form-control
+          block
+          w-full
+          px-3
+          py-1.5
+          text-base
+          font-normal
+          text-gray-700
+          bg-white bg-clip-padding
+          border border-solid border-black
+          rounded
+          transition
+          ease-in-out
+          m-0
+          focus:text-gray-700 focus:bg-white focus:border-gray-600 focus:outline-none
+        "
+        id="op_a_{{ forloop.counter }}"
+        name="op_a_{{ forloop.counter }}"
+        required
+        placeholder="Option A"/>
+    </div>
+    <div class="mb-3 xl:w-96 pt-10 pl-6">
+        <label for="exampleFormControlInput1" class="form-label font-serif inline-block mb-2 text-xl text-gray-700"
+          >Option B :-</label>
+        <input
+          class="
+            form-control
+            block
+            w-full
+            px-3
+            py-1.5
+            text-base
+            font-normal
+            text-gray-700
+            bg-white bg-clip-padding
+            border border-solid border-black
+            rounded
+            transition
+            ease-in-out
+            m-0
+            focus:text-gray-700 focus:bg-white focus:border-gray-600 focus:outline-none
+          "
+          id="op_b_{{ forloop.counter }}"
+          name="op_b_{{ forloop.counter }}"
+          required
+          placeholder="Option B"/>
+      </div>
+</div>
+<div class="flex justify-center">
+    <div class="mb-3 xl:w-96 pr-2">
+      <label for="exampleFormControlInput1" class="form-label font-serif inline-block mb-2 text-xl text-gray-700"
+        >Option C :-</label>
+      <input
+        class="
+          form-control
+          block
+          w-full
+          px-3
+          py-1.5
+          text-base
+          font-normal
+          text-gray-700
+          bg-white bg-clip-padding
+          border border-solid border-black
+          rounded
+          transition
+          ease-in-out
+          m-0
+          focus:text-gray-700 focus:bg-white focus:border-gray-600 focus:outline-none
+        "
+        id="op_c_{{ forloop.counter }}"
+        name="op_c_{{ forloop.counter }}"
+        required
+        placeholder="Option C"/>
+    </div>
+    <div class="mb-3 xl:w-96 pl-6">
+        <label for="exampleFormControlInput1" class="form-label font-serif inline-block mb-2 text-xl text-gray-700"
+          >Option D :-</label>
+        <input
+          class="
+            form-control
+            block
+            w-full
+            px-3
+            py-1.5
+            text-base
+            font-normal
+            text-gray-700
+            bg-white bg-clip-padding
+            border border-solid border-black
+            rounded
+            transition
+            ease-in-out
+            m-0
+            focus:text-gray-700 focus:bg-white focus:border-gray-600 focus:outline-none
+          "
+          id="op_d_{{ forloop.counter }}"
+          name="op_d_{{ forloop.counter }}"
+          required
+          placeholder="Option D"/>
+      </div>
+</div>
+<div class="flex justify-center">
+    <div class="mb-3 xl:w-96 pr-2">
+      <label for="exampleFormControlInput1" class="form-label font-serif inline-block mb-2 text-xl text-gray-700"
+        >Answer :-</label>
+      <salect
+        class="
+          form-control
+          block
+          w-full
+          px-3
+          py-1.5
+          text-base
+          font-normal
+          text-gray-700
+          bg-white bg-clip-padding
+          border border-solid border-black
+          rounded
+          transition
+          ease-in-out
+          m-0
+          focus:text-gray-700 focus:bg-white focus:border-gray-600 focus:outline-none
+        "
+        id="ans_{{ forloop.counter }}"
+        name="ans_{{ forloop.counter }}"
+        required>
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+      </salect>
+    </div>
+
+</div>
+<div class="my-2 mt-5 bg-gray-900 text-center w-[98%] h-[3px] mb-20"></div>
+
+{% endfor %}
+<div class="flex justify-center py-10">
+    <button type="reset" class="inline-block text-xl px-6 py-2.5 bg-gray-500 text-white font-medium leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:bg-gray-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out">Clear</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button type="submit" class="inline-block text-xl px-6 py-2.5 bg-green-500 text-white font-medium leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Add</button>
+</div>
+</form>

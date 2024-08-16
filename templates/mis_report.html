@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Head Admin - MIS Report</title>
+        <link rel="icon" href="/static/images/logo.png">
+        <style>
+        td{
+            padding: 10px 20px;
+            text-align: center;
+        }
+        th{
+            padding: 20px;
+        }
+        .print_btn{
+            padding: 10px;
+            background-color: #a69b9bda;
+            border: 1px solid black;
+            border-radius: 20px;            
+            text-align: center;
+            margin-bottom: 30px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .print_btn:hover{
+            border: 2px solid black;
+            box-shadow: 2px 2px 2px rgb(94, 92, 92);
+        }
+        .data{
+            display: none;
+        }
+        @media print {
+            .print_btn{
+                display: none;
+            }
+            .data{
+                display: block;
+            }            
+        }
+        
+    </style>
+    </head>
+    <body>
+        <div class="data">
+            <h3>
+                Head Admin - {{headadmin_user.h_name}}<br>
+                Id - {{headadmin_user.h_id}}<br>
+                Total Teachers - {{total_teacher}}<br>
+                Total Batches - {{total_batch}}<br>
+                Total Test - {{total_test}}<br>
+            </h3>
+        </div>
+        <button onclick="window.print()" class="print_btn">Print Report</button>
+        <br>
+        <table border="2px solid black">
+            <thead>
+                <th>Date</th>
+                <th>Teacher Name</th>
+                <th>Batch Name</th>
+                <th>Test Name</th>
+                <th>Students Attended</th>
+
+            </thead>
+            {% for teacher in teacher_data reversed%}
+            {% for teacher_data in teacher.test_table reversed %}
+            <tr>
+                <td>{{teacher_data.date}}</td>
+                <td>{{teacher.name}}</td>
+                <td>{{teacher_data.batch_name}}</td>
+                <td>{{teacher_data.test_name}}</td>
+                <td>{{teacher_data.students}}</td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </table>
+
+    </body>
+</html>

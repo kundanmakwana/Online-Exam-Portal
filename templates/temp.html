@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+    <label>Question</label>
+    <input type="text" name="q_text" id="q_text" placeholder="Question"/><br>
+    <label>Option A</label>
+    <input type="text" name="op_a" id="op_a" placeholder="Option A"/><br>
+    <label>Option B</label>
+    <input type="text" name="op_b" id="op_b" placeholder="Option B"/><br>
+    <label>Option C</label>
+    <input type="text" name="op_c" id="op_c" placeholder="Option C"/><br>
+    <label>Option D</label>
+    <input type="text" name="op_d" id="op_d" placeholder="Option D"/><br>
+    <label>Answer</label>
+    <input type="text" name="ans" id="ans" placeholder="Answer"/><br>
+    <button type="submit">Submit</button>
+    </form>
+
+    {% for que in data %}
+    {{que.q_text}}
+    {% endfor %}
+</body>
+</html>
